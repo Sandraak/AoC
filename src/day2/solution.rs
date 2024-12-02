@@ -11,7 +11,7 @@ fn calc_nr_of_safe_reports(input: &str) -> u32 {
         let report = report
             .split_whitespace()
             // .parse::<u32>().unwrap() ?
-            .filter_map(|s| s.parse::<u32>().ok())
+            .map(|s| s.parse::<u32>().unwrap())
             .collect::<Vec<u32>>();
 
         if is_safe(&report) || is_safe_by_removing_one(&report) {
@@ -34,9 +34,10 @@ fn is_safe(report: &[u32]) -> bool {
 fn is_safe_by_removing_one(report: &[u32]) -> bool {
     report.iter().enumerate().any(|(i, _)| {
         // voor elk element in report doe het volgende ...
-        let mut new_report = report.to_vec(); // Ik maak nu wel steeds een nieuwe vector aan, dit kan wss veel beter?
+        let mut new_report: Vec<u32> = report.to_vec(); // Ik maak nu wel steeds een nieuwe vector aan, dit kan wss veel beter?
         new_report.remove(i); // Verwijder het element op plek i
-        is_safe(&new_report) // Controleer of de nieuwe vector veilig is
+        is_safe(&new_report) // Controleer of de nieuwe vector veilig is, zo ja,
+                             // return true
     })
 
     // (0..report.len())
