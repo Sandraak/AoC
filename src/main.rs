@@ -12,8 +12,12 @@
 // mod day6;
 // use crate::day7::solution::solve;
 // mod day7;
-use crate::day8::solution::solve;
-mod day8;
+// use crate::day8::solution::solve;
+// mod day8;
+// use crate::day9::solution::solve;
+// mod day9;
+use crate::day10::solution::solve;
+mod day10;
 
 fn main() {
     solve();
