@@ -3,8 +3,8 @@ use std::collections::{HashMap, HashSet};
 use itertools::Itertools;
 
 pub fn solve() {
-    const INPUT: &str = include_str!("./puzzle_input");
-    const TEST_INPUT: &str = include_str!("./test_input");
+    const INPUT: &str = include_str!("puzzle_input");
+    const TEST_INPUT: &str = include_str!("test_input");
     let map = create_map(INPUT);
     let antennas = find_antennas(&map);
     let nr_of_antinodes = place_antinodes(antennas, &map);

@@ -1,6 +1,6 @@
 pub fn solve() {
-    const INPUT: &str = include_str!("./puzzle_input");
-    const TEST_INPUT: &str = include_str!("./test_input");
+    const INPUT: &str = include_str!("puzzle_input");
+    const TEST_INPUT: &str = include_str!("test_input");
     let calibration_equations = input_to_calibration_equition(INPUT);
     let sum = get_sum_of_correct_calibrations(calibration_equations);
     print!("Sum of correct calibrations: {}", sum);

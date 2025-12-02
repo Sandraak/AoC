@@ -1,6 +1,6 @@
 pub fn solve() {
-    const INPUT: &str = include_str!("./puzzle_input");
-    const TEST_INPUT: &str = include_str!("./test_input");
+    const INPUT: &str = include_str!("puzzle_input");
+    const TEST_INPUT: &str = include_str!("test_input");
     let (rules, reports) = get_rules_and_reports(INPUT);
     let (valid_reports, invalid_reports) = get_valid_and_invalid_reports(&rules, reports);
     // let sum_valid = sum_of_middle_pages(valid_reports);

@@ -1,6 +1,6 @@
 pub fn solve() {
-    const INPUT: &str = include_str!("./puzzle_input");
-    const TEST_INPUT: &str = include_str!("./test_input");
+    const INPUT: &str = include_str!("puzzle_input");
+    const TEST_INPUT: &str = include_str!("test_input");
     let (map, guard_pos) = find_guard(INPUT);
     find_path(map, guard_pos);
 }

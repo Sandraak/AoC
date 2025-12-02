@@ -1,5 +1,5 @@
 pub fn solve() {
-    const INPUT: &str = include_str!("./puzzle_input");
+    const INPUT: &str = include_str!("puzzle_input");
     // const TEST_INPUT: &str = include_str!("./test_input");
     let nr_of_safe_reports = calc_nr_of_safe_reports(INPUT);
     println!("Number of safe reports: {}", nr_of_safe_reports);

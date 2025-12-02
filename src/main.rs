@@ -1,5 +1,5 @@
-// use crate::day1::solution::solve;
-// mod day1;
+use crate::day1::solution::solve;
+mod day1;
 // use crate::day2::solution::solve;
 // mod day2;
 // use crate::day3::solution::solve;
@@ -16,8 +16,7 @@
 // mod day8;
 // use crate::day9::solution::solve;
 // mod day9;
-use crate::day10::solution::solve;
-mod day10;
+// use crate::day10::solution::solve;
 
 fn main() {
     solve();

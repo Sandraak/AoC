@@ -1,6 +1,6 @@
 pub fn solve() {
-    const INPUT: &str = include_str!("./puzzle_input");
-    const TEST_INPUT: &str = include_str!("./test_input");
+    const INPUT: &str = include_str!("puzzle_input");
+    const TEST_INPUT: &str = include_str!("test_input");
 
     calc_sum_of_mult(TEST_INPUT);
 }

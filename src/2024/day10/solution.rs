@@ -1,8 +1,8 @@
 use std::collections::HashSet;
 
 pub fn solve() {
-    const INPUT: &str = include_str!("./puzzle_input");
-    const TEST_INPUT: &str = include_str!("./test_input");
+    const INPUT: &str = include_str!("puzzle_input");
+    const TEST_INPUT: &str = include_str!("test_input");
     let map = input_to_map(INPUT);
     let trailheads = find_trailheads(&map);
     // let score = trailheads
