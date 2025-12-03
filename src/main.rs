@@ -1,7 +1,8 @@
-use crate::day1::solution::solve;
-mod day1;
-// use crate::day2::solution::solve;
-// mod day2;
+use std::time::Instant;
+// use crate::day1::solution::solve;
+// mod day1;
+use crate::day2::solution::solve;
+mod day2;
 // use crate::day3::solution::solve;
 // mod day3;
 // use crate::day4::solution::solve;
@@ -19,5 +20,8 @@ mod day1;
 // use crate::day10::solution::solve;
 
 fn main() {
+    let now = Instant::now();
     solve();
+    let elapsed = now.elapsed();
+    println!("Time elapsed: {:?}", elapsed);
 }
