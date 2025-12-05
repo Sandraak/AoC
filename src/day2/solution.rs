@@ -66,10 +66,8 @@ fn split_in_equal_pieces_and_check_if_valid(ranges: Vec<Range>) -> usize {
     println!("sum is {}", sum);
     sum
 }
+
 fn all_same<T: PartialEq>(v: &[T]) -> bool {
-    if v.len() < 2 {
-        return true;
-    }
     v.iter().all(|x| x == &v[0])
 }
 
