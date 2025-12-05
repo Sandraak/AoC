@@ -3,7 +3,7 @@ use itertools::Itertools;
 pub fn solve() {
     const INPUT: &str = include_str!("puzzle_input");
     const TEST_INPUT: &str = include_str!("./test_input");
-    let parsed_input = input_to_ranges(TEST_INPUT);
+    let parsed_input = input_to_ranges(INPUT);
     let invalid_ids = split_in_equal_pieces_and_check_if_valid(parsed_input);
 }
 
@@ -43,7 +43,7 @@ fn split_in_equal_pieces_and_check_if_valid(ranges: Vec<Range>) -> usize {
     let mut invalid_ids: Vec<usize> = Vec::new();
     let prime_numbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
     for range in ranges {
-        for i in range.start..range.end {
+        for i in range.start..=range.end {
             let i_as_str = i.to_string();
             let i_len = i_as_str.len();
             for prime_number in prime_numbers {
@@ -67,11 +67,9 @@ fn split_in_equal_pieces_and_check_if_valid(ranges: Vec<Range>) -> usize {
     sum
 }
 fn all_same<T: PartialEq>(v: &[T]) -> bool {
-    // Handle empty or single-element vectors
     if v.len() < 2 {
         return true;
     }
-    // Check if all elements are equal to the first element
     v.iter().all(|x| x == &v[0])
 }
 
