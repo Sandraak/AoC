@@ -1,12 +1,10 @@
+use itertools::Itertools;
+
 pub fn solve() {
     const INPUT: &str = include_str!("puzzle_input");
     const TEST_INPUT: &str = include_str!("test_input");
     let grid = parse_input(INPUT);
-    print_grid(&grid);
-    println!("\n ================ \n");
-    let new_grid = mark_accessible_paper(grid);
-    print_grid(&new_grid);
-    let nr_of_accessible_papers = count_accessible_papers(&new_grid);
+    keep_removing_paper_while_counting(grid);
 }
 
 #[derive(Debug)]
@@ -26,6 +24,23 @@ const DIRECTIONS: [(isize, isize); 8] = [
     (1, 1),
 ];
 
+fn keep_removing_paper_while_counting(grid: Vec<Vec<char>>) -> usize{
+    let mut count = 0;
+    let mut mutated_grid = grid.clone();
+    let mut i = 0;
+    while mutated_grid.iter().flatten().any(|&v| v == 'x') || i == 0{
+        let last_mutated_grid = mutated_grid.clone();
+        mutated_grid = mark_accessible_paper(mutated_grid);
+        if last_mutated_grid == mutated_grid {
+            break;
+        }
+        count = count_accessible_papers(&mutated_grid);
+        i += 1;
+    }
+    println!("Number of accessible papers: {}", count);
+    count
+}
+
 fn mark_accessible_paper(grid: Vec<Vec<char>>) -> Vec<Vec<char>> {
     let mut new_grid = grid.clone();
     for row in 0..grid.len() {
@@ -44,7 +59,6 @@ fn count_accessible_papers(grid: &Vec<Vec<char>>) -> usize {
     for row in grid {
         count += row.iter().filter(|&c| *c == 'x').count();
     }
-    println!("Number of accessible papers: {}", count);
     count
 }
 
