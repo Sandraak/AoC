@@ -2,16 +2,27 @@ pub fn solve() {
     const INPUT: &str = include_str!("puzzle_input");
     const TEST_INPUT: &str = include_str!("test_input");
     let (ids, ranges) = parse_input(INPUT);
-    let (smallest, largest) = get_smallest_and_largest_start_range(&ranges);
-    let all_ids = all_ids_in_range(&ranges);
-    let all_possible_fresh_ids = remove_rotten_ids(smallest, largest, all_ids);
-    let fresh_ingredients = fresh_ingredients(ids, &all_possible_fresh_ids);
+    let merged_ranges = merge_ranges(ranges);
+    // let (smallest, largest) = get_smallest_and_largest_start_range(&merged_ranges);
+    // let all_ids = all_ids_in_range(&ranges);
+    // let all_possible_fresh_ids = remove_rotten_ids(smallest, largest,ids);
+    // let fresh_ingredients = fresh_ingredients(all_possible_fresh_ids, &merged_ranges);
+    let count = calc_nr_of_fresh_ingredients(&merged_ranges);
 }
 
 #[derive(Debug)]
 struct Range {
     start: u128,
     end: u128,
+}
+
+fn calc_nr_of_fresh_ingredients(ranges: &[Range]) -> u128 {
+    let mut count = 0;
+    for range in ranges {
+        count += (range.end - range.start +1);
+    }
+    println!("nr of fresh ingredients: {}", count);
+    count
 }
 
 /*
@@ -36,7 +47,7 @@ fn merge_ranges(mut ranges: Vec<Range>) -> Vec<Range> {
         }
         merged.push(range);
     }
-    println!("merged ranges");
+    // println!("merged ranges: {:?}", merged);
     merged
 }
 
@@ -53,19 +64,30 @@ fn remove_rotten_ids(smallest: u128, largest: u128, ids: Vec<u128>) -> Vec<u128>
             optimized_ids.push(id);
         }
     }
-    println!("rotten ids removed");
+    // println!("rotten ids removed: ids: {:?}", optimized_ids);
     optimized_ids
 }
 
-fn fresh_ingredients(ids: Vec<u128>, fresh_ranges: &Vec<u128>) -> Vec<u128> {
+fn fresh_ingredients(ids: Vec<u128>, fresh_ranges: &Vec<Range>) -> Vec<u128> {
     let mut fresh_ingredients: Vec<u128> = Vec::new();
     for id in ids {
-        if fresh_ranges.contains(&id) {
+        if is_in_ranges(id, fresh_ranges){
             fresh_ingredients.push(id);
         }
     }
     println!("nr of fresh ingredients: {}", fresh_ingredients.len());
     fresh_ingredients
+}
+
+fn is_in_ranges(id: u128, ranges: &Vec<Range>) -> bool {
+    match ranges.binary_search_by(|range| {
+        if id < range.start { std::cmp::Ordering::Greater }
+        else if id > range.end { std::cmp::Ordering::Less }
+        else { std::cmp::Ordering::Equal }
+    }) {
+        Ok(_) => true,
+        Err(_) => false,
+    }
 }
 
 // fn all_ids_in_range(ranges: &Vec<Range>) -> Vec<u128> {
@@ -85,13 +107,13 @@ fn fresh_ingredients(ids: Vec<u128>, fresh_ranges: &Vec<u128>) -> Vec<u128> {
 fn parse_input(input: &str) -> (Vec<u128>, Vec<Range>) {
     let parts: Vec<&str> = input.split("\n\n").collect();
 
-    let ids: Vec<u128> = parts[1]
+    let mut ids: Vec<u128> = parts[1]
         .lines()
         .map(|l| l.parse::<u128>().unwrap())
         .collect();
+    ids.sort();
     let ranges: Vec<Range> = input_to_ranges(parts[0]);
     // println!("ranges: {:?},  ids: {:?}",ranges, ids);
-    println!("input_parsed");
     (ids, ranges)
 }
 
