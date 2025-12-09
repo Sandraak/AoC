@@ -1,4 +1,107 @@
 pub fn solve() {
     const INPUT: &str = include_str!("puzzle_input");
     const TEST_INPUT: &str = include_str!("test_input");
+    let (ids, ranges) = parse_input(INPUT);
+    let (smallest, largest) = get_smallest_and_largest_start_range(&ranges);
+    let all_ids = all_ids_in_range(&ranges);
+    let all_possible_fresh_ids = remove_rotten_ids(smallest, largest, all_ids);
+    let fresh_ingredients = fresh_ingredients(ids, &all_possible_fresh_ids);
+}
+
+#[derive(Debug)]
+struct Range {
+    start: u128,
+    end: u128,
+}
+
+/*
+    * 3-5
+    *10-14
+    *12-18
+    *16-20
+
+    *=> 3-5, 10-20
+*/
+
+fn merge_ranges(mut ranges: Vec<Range>) -> Vec<Range> {
+    ranges.sort_by_key(|r| r.start);
+    let mut merged: Vec<Range> = Vec::new();
+
+    for range in ranges {
+        if let Some(last_range) = merged.last_mut() {
+            if range.start <= last_range.end + 1 {
+                last_range.end = last_range.end.max(range.end);
+                continue;
+            }
+        }
+        merged.push(range);
+    }
+    println!("merged ranges");
+    merged
+}
+
+fn get_smallest_and_largest_start_range(ranges: &Vec<Range>) -> (u128, u128) {
+    let smallest = ranges.iter().map(|range| range.start).min().unwrap();
+    let biggest = ranges.iter().map(|range| range.end).max().unwrap();
+    (smallest, biggest)
+}
+
+fn remove_rotten_ids(smallest: u128, largest: u128, ids: Vec<u128>) -> Vec<u128> {
+    let mut optimized_ids = Vec::new();
+    for id in ids {
+        if id > smallest && id < largest {
+            optimized_ids.push(id);
+        }
+    }
+    println!("rotten ids removed");
+    optimized_ids
+}
+
+fn fresh_ingredients(ids: Vec<u128>, fresh_ranges: &Vec<u128>) -> Vec<u128> {
+    let mut fresh_ingredients: Vec<u128> = Vec::new();
+    for id in ids {
+        if fresh_ranges.contains(&id) {
+            fresh_ingredients.push(id);
+        }
+    }
+    println!("nr of fresh ingredients: {}", fresh_ingredients.len());
+    fresh_ingredients
+}
+
+// fn all_ids_in_range(ranges: &Vec<Range>) -> Vec<u128> {
+//     let mut all_ids: Vec<u128> = vec![];
+//     for range in ranges {
+//         for id in range.start..=range.end {
+//             if !all_ids.contains(&id) {
+//                 all_ids.push(id);
+//             }
+//         }
+//     }
+//     println!("all_ids in range gathered");
+//     // println!("all ids: {:?}", all_ids);
+//     all_ids
+// }
+
+fn parse_input(input: &str) -> (Vec<u128>, Vec<Range>) {
+    let parts: Vec<&str> = input.split("\n\n").collect();
+
+    let ids: Vec<u128> = parts[1]
+        .lines()
+        .map(|l| l.parse::<u128>().unwrap())
+        .collect();
+    let ranges: Vec<Range> = input_to_ranges(parts[0]);
+    // println!("ranges: {:?},  ids: {:?}",ranges, ids);
+    println!("input_parsed");
+    (ids, ranges)
+}
+
+fn input_to_ranges(input: &str) -> Vec<Range> {
+    input
+        .split("\n")
+        .map(|range| range.split_once('-').unwrap())
+        .map(|(start, end)| Range {
+            start: start.parse().unwrap(),
+            end: end.parse().unwrap(),
+        })
+        .collect()
 }
